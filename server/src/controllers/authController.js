@@ -12,9 +12,9 @@ function generateToken(params = {}){
 }
 
 router.post('/register', async(req, res) => {
-    const {email} = req.body;
+    const {login} = req.body;
     try {
-        if (await User.findOne({email}))
+        if (await User.findOne({login}))
             return res.status(400).send({error: 'Usuario ja existente'});
 
         const user = await User.create(req.body);
@@ -32,8 +32,8 @@ router.post('/register', async(req, res) => {
 });
 
 router.post('/authenticate', async(req, res)=>{
-    const {email, password} = req.body;
-    const user = await User.findOne({email}).select('+password');
+    const {login, password} = req.body;
+    const user = await User.findOne({login}).select('+password');
 
     if(!user)
         return res.status(400).send({error: 'Usuario nao encontrado'});
