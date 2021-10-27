@@ -43,12 +43,23 @@ router.post('/authenticate', async(req, res)=>{
 
     user.password = undefined;
 
-    const token = 
-
     res.send({
         user, 
         token: generateToken({id:user.id}),
     });
 });
+
+router.get('/list', async(req, res)=>{
+    const users = await User.find();
+    res.send(users);
+});
+
+router.delete('/delete/:id', async(req, res)=>{
+    const {id} = req.params;
+    console.log(id);
+    const user = await User.findByIdAndDelete({id});
+    res.send(user);
+});
+
 
 module.exports = app => app.use('/auth', router);
